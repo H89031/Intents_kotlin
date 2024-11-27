@@ -1,5 +1,6 @@
 package com.example.intents_kotlin
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<View>(R.id.btnAppIntents).setOnClickListener(this)
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     override fun onClick(view: View) {
 
         // Figure out which button was clicked

@@ -1,6 +1,7 @@
 package com.example.intents_kotlin
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -27,47 +28,57 @@ class MediaActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @SuppressLint("QueryPermissionsNeeded")
-    override fun onClick(v: View) {
-        val btnClick = v.id
+    override fun onClick(view: View) {
+        val btnClick = view.id
 
-        if (btnClick == R.id.btnStartCamera) {
-            // TODO: Start the camera in photo mode
-            val i = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
-
-            if (i.resolveActivity(packageManager) != null) {
-                startActivity(i)
+        when (btnClick) {
+            R.id.btnStartCamera -> {
+                // TODO: Start the camera in photo mode
+                val i = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+                try {
+                    startActivity(i)
+                } catch (e: ActivityNotFoundException){
+                    e.printStackTrace()
+                }
             }
-        } else if (btnClick == R.id.btnCapturePic) {
-            // Take a picture and consume the returned result bitmap
-            val i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-            if (i.resolveActivity(packageManager) != null) {
-                // start the activity and indicate that we expect a result back
-                startActivityForResult(i, GET_IMAGE_CAPTURE)
+            R.id.btnCapturePic -> {
+                // Take a picture and consume the returned result bitmap
+                val i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                try {
+                    startActivityForResult(i, GET_IMAGE_CAPTURE)
+                } catch (e: ActivityNotFoundException){
+                    e.printStackTrace()
+                }
             }
-        } else if (btnClick == R.id.btnSendText) {
-            val message = "This is a text message"
+            R.id.btnSendText -> {
+                val message = "This is a text message"
 
-            val i = Intent(Intent.ACTION_SENDTO)
+                val i = Intent(Intent.ACTION_SENDTO)
 
-            // Use the setData function to indicate the type of data that will be sent
-            // this will help the system figure out what apps to include in the chooser
-            i.setData(Uri.parse("sms:18885551212"))
-            i.putExtra("sms_body", message)
+                // Use the setData function to indicate the type of data that will be sent
+                // this will help the system figure out what apps to include in the chooser
+                i.setData(Uri.parse("sms:18885551212"))
+                i.putExtra("sms_body", message)
 
-            if (i.resolveActivity(packageManager) != null) {
-                startActivity(i)
+                try {
+                    startActivity(i)
+                } catch (e: ActivityNotFoundException){
+                    e.printStackTrace()
+                }
             }
-        } else if (btnClick == R.id.btnOpenURL) {
-            val url = "http://www.google.com"
+            R.id.btnOpenURL -> {
+                val url = "http://www.google.com"
 
-            // Parse the URL string using the Uri class
-            val webpage = Uri.parse(url)
+                // Parse the URL string using the Uri class
+                val webpage = Uri.parse(url)
 
-            val i = Intent(Intent.ACTION_VIEW, webpage)
+                val i = Intent(Intent.ACTION_VIEW, webpage)
 
-            if (i.resolveActivity(packageManager) != null) {
-                startActivity(i)
+                try {
+                    startActivity(i)
+                } catch (e: ActivityNotFoundException){
+                    e.printStackTrace()
+                }
             }
         }
     }
